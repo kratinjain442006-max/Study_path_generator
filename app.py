@@ -48,7 +48,7 @@ def apply_styles(dark: bool):
         <style>
         .stApp {{
             background: {background};
-    color: {text};
+            color: {text};
         }}
         [data-testid="stHeader"] {{
             background: transparent;
@@ -97,8 +97,8 @@ def apply_styles(dark: bool):
         }}
         .metric-value {{
             color: {text};
-            font-size: 1.7rem; 
-    font-weight: 800;
+            font-size: 1.7rem;
+     font-weight: 800;
             margin-top: .2rem;
         }}
         .metric-help {{
@@ -147,8 +147,7 @@ def login_page():
                 st.session_state.logged_in = True
                 st.rerun()
             else:
-                st.error("Invalid username or password.") 
-
+                st.error("Invalid username or password.")
         st.caption("Demo login: username `admin` · password `1234`")
         st.info("Note: this is a demo login, not secure production authentication.")
 
@@ -199,39 +198,7 @@ if page == "Dashboard":
           <p class="hero-copy">Turn your subjects and available hours into a structured, priority-based study plan.</p>
         </div>
         """, 
-        unsafe_allow_html=True,
-    )
-
-    if plan_exists():
-        plan = st.session_state.generated_plan
-        tasks = st.session_state.completed_tasks
-        total_tasks = len(plan)
-        completed = sum(1 for i in range(total_tasks) if i in tasks)
-        completion = completed / total_tasks if total_tasks else 0
-        total_hours = sum(item["time"] for item in plan)
-        high_count = sum(1 for item in plan if item["priority"] == "High")
-        c1, c2, c3, c4 = st.columns(4)
-        with c1:
-            metric_card("Subjects planned", total_tasks)
-        with c2:
-            metric_card("Daily study time", f"{total_hours:.1f} hrs")
-        with c3:
-            metric_card("High-priority subjects", high_count)
-        with c4:
-            metric_card("Tasks completed", f"{completion:.0%}", f"{completed} of {total_tasks} subjects marked done")
-
-        st.subheader("Your progress")
-        st.progress(completion, text=f"{completion:.0%} of planned subjects completed")
-        df = pd.DataFrame(plan)
-        fig = px.bar(
-            df,
-            x="subject",
-            y="time",
-            color="priority",
-            text="time",
-            category_orders={"priority": ["High", "Medium", "Low"]},
-            color_discrete_map={"High": "#e45756", "Medium": "#f2a541", "Low": "#36a269"},
-            labels={"subject": "Subject", "time": "Estimated hours", "priority": "Priority"},
+                    labels={"subject": "Subject", "time": "Estimated hours", "priority": "Priority"},
             title="Recommended daily study time by subject",
         )
         fig.update_traces(texttemplate="%{text:.2f} h", textposition="outside", cliponaxis=False)
@@ -249,7 +216,8 @@ elif page == "Create Study Plan":
     st.title("✨ Create your personalized study plan")
     st.write("Enter your subjects and current marks. Lower marks receive more study time.")
     sample_subjects, sample_marks, sample_hours = get_sample_data()
- with st.form("plan_form"):
+
+    with st.form("plan_form"):
         col1, col2 = st.columns(2)
         with col1:
             name = st.text_input("Student name", value=st.session_state.student_profile.get("name", ""))
@@ -349,5 +317,4 @@ elif page == "My Study Tasks":
 
 # ---------------- ABOUT ----------------
 elif page == "About Project":
-    st.title("ℹ️ About StudyPathAI")
- 
+    st.title("ℹ️ About StudyPathAI") 
