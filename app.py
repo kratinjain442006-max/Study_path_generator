@@ -148,7 +148,7 @@ def login_page():
                 st.rerun()
             else:
                 st.error("Invalid username or password.") 
- st.caption("Demo login: username `admin` · password `1234`")
+ st.caption("Demo login: username `admin` · password `1234`");
         st.info("Note: this is a demo login, not secure production authentication.")
 
 if not st.session_state.logged_in:
